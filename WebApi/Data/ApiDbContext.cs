@@ -13,13 +13,9 @@ namespace WebApi.Data
         }
 
         public DbSet<Song> Songs { get; set; }
+        public DbSet<Artist> Artists { get; set; }
+        public DbSet<Album> Albums { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Song>().HasData(
-                new Song() { Id = 1, Title = "DDLJ", Duration = 300, Language = "Hindi" },
-                new Song() { Id = 2, Title = "Perfect", Duration = 240, Language = "English" }
-                );
-        }
+
     }
 }
