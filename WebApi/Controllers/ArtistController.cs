@@ -29,8 +29,10 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetArtists()
+        public async Task<IActionResult> GetArtists(int? pageNumber, int? pageSize)
         {
+            int currentPageNumber = pageNumber ?? 1;
+            int currentPageSize = pageSize ?? 1;
             var artists = await (from artist in _dbContext.Artists
                                  select new
                                  {
@@ -38,7 +40,7 @@ namespace WebApi.Controllers
                                      Name = artist.Name,
                                      ImageUrl = artist.ImageUrl
                                  }).ToListAsync();
-            return Ok(artists);
+            return Ok(artists.Skip((currentPageNumber - 1) * currentPageSize).Take(currentPageSize));
         }
 
         [HttpGet("{id}")]

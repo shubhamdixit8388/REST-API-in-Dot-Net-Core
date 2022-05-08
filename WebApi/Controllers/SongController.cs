@@ -29,8 +29,10 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(int? pageNumber, int? pageSize)
         {
+            int currentPageNumber = pageNumber ?? 1;
+            int currentPageSize = pageSize ?? 1;
             var songs = await (from song in _dbContext.Songs
                                select new
                                {
@@ -40,7 +42,7 @@ namespace WebApi.Controllers
                                    ImageUrl = song.ImageUrl,
                                    AudioUrl = song.AudioUrl
                                }).ToListAsync();
-            return Ok(songs);
+            return Ok(songs.Skip((currentPageNumber - 1) * currentPageSize).Take(currentPageSize));
         }
 
         [HttpGet("[action]")]
